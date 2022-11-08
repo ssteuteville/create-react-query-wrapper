@@ -1,0 +1,24 @@
+{
+  "name": "create-react-query-wrapper",
+  "version": "0.0.1",
+  "main": "dist/bundle.js",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": ">=5.31.0",
+    "@typescript-eslint/parser": ">=5.31.0",
+    "esbuild": "^0.15.13",
+    "eslint": ">=8.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-xo": "^0.42.0",
+    "eslint-config-xo-typescript": "^0.53.0",
+    "prettier": "^2.7.1",
+    "rollup": "^3.2.5",
+    "rollup-plugin-dts": "^5.0.0",
+    "rollup-plugin-esbuild": "^4.10.2",
+    "typescript": ">=4.4"
+  },
+  "dependencies": {
+    "react-query": "^3.39.2"
+  }
+}
