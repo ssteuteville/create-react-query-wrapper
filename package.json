@@ -1,6 +1,6 @@
 {
   "name": "@steute.dev/create-react-query-wrapper",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/bundle.js",
   "license": "MIT",
   "type": "module",
