@@ -1,6 +1,6 @@
 {
-  "name": "create-react-query-wrapper",
-  "version": "0.0.1",
+  "name": "@steute.dev/create-react-query-wrapper",
+  "version": "0.0.4",
   "main": "dist/bundle.js",
   "license": "MIT",
   "type": "module",
@@ -20,5 +20,8 @@
   },
   "dependencies": {
     "react-query": "^3.39.2"
+  },
+  "scripts": {
+    "build": "rollup -c"
   }
 }
