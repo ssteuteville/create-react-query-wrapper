@@ -1,27 +1,38 @@
-import type { QueryKey, UseQueryOptions } from 'react-query';
+import type { QueryKey, UseQueryOptions, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import type { Primitive } from './types';
 
-export const createQueryWrapper = <
+export type SingleParamQueryWrapper<
+  ReturnType,
+  ErrorType,
+  ParamsType extends Record<string, Primitive> | Primitive
+> = {
+  <SelectedType = ReturnType>(
+    param: ParamsType,
+    options?: UseQueryOptions<ReturnType, ErrorType, SelectedType>
+  ): UseQueryResult<SelectedType, ErrorType>;
+  getQueryKey: (param: ParamsType | undefined) => QueryKey;
+};
+
+export const createSingleParamQueryWrapper = <
   ErrorType = unknown,
   ParamsType extends Record<string, Primitive> | Primitive = Record<string, Primitive>,
   ReturnType = any
 >(
   apiFunc: (params: ParamsType) => Promise<ReturnType>,
   queryName: string
-) => {
+): SingleParamQueryWrapper<ReturnType, ErrorType, ParamsType> => {
   const getQueryKey = (params: ParamsType | undefined = undefined): QueryKey =>
     params
       ? [queryName, ...(typeof params === 'object' ? Object.values<Primitive>(params) : [params])]
       : [queryName];
 
-  const useLeyebraryQuery = <SelectedType = ReturnType>(
-    params: ParamsType,
+  const useQueryWrapper = <SelectedType = ReturnType>(
+    param: ParamsType,
     options: UseQueryOptions<ReturnType, ErrorType, SelectedType> = {}
-  ) =>
-    useQuery<ReturnType, ErrorType, SelectedType>(getQueryKey(params), async () => apiFunc(params), options);
+  ) => useQuery<ReturnType, ErrorType, SelectedType>(getQueryKey(param), async () => apiFunc(param), options);
 
-  useLeyebraryQuery.getQueryKey = getQueryKey;
+  useQueryWrapper.getQueryKey = getQueryKey;
 
-  return useLeyebraryQuery;
+  return useQueryWrapper;
 };
