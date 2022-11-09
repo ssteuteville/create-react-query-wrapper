@@ -1,11 +1,11 @@
-import dts from 'rollup-plugin-dts';
-import esbuild from 'rollup-plugin-esbuild';
+const dts = require('rollup-plugin-dts').default;
+const esbuild = require('rollup-plugin-esbuild').default;
 // Rollup.config.js
 /**
  * @type {import('rollup').RollupOptions}
  */
 
-export default [
+module.exports.default = [
   {
     input: 'src/index.ts',
     plugins: [esbuild()],
