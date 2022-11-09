@@ -1,11 +1,11 @@
-import type { MutationKey, UseMutationOptions } from 'react-query';
-import { useMutation, useQueryClient } from 'react-query';
+import type { MutationKey, UseMutationOptions } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { QueryGetter } from './types';
 
-type CreateMutationWrapperOptions = {
+interface CreateMutationWrapperOptions {
   mutationKey?: MutationKey;
   invalidates?: QueryGetter[];
-};
+}
 
 export const createMutationWrapper = <ErrorType = unknown, ParamType = any, ResultType = any>(
   mutationFn: (param: ParamType) => Promise<ResultType>,
@@ -20,10 +20,10 @@ export const createMutationWrapper = <ErrorType = unknown, ParamType = any, Resu
       async onSuccess(data, variables, context) {
         await options.onSuccess?.(data, variables, context);
 
-        if (wrapperOptions.invalidates) {
+        if (wrapperOptions.invalidates != null) {
           await Promise.all(
-            wrapperOptions.invalidates.map(async getter =>
-              queryClient.invalidateQueries(getter.getQueryKey())
+            wrapperOptions.invalidates.map(
+              async getter => await queryClient.invalidateQueries(getter.getQueryKey())
             )
           );
         }

@@ -1,7 +1,7 @@
-import type { QueryKey } from 'react-query';
+import type { QueryKey } from '@tanstack/react-query';
 
 export type Primitive = bigint | boolean | number | undefined | string | symbol;
 
-export type QueryGetter = {
+export interface QueryGetter {
   getQueryKey: () => QueryKey;
-};
+}

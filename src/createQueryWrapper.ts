@@ -1,13 +1,13 @@
-import type { QueryKey, UseQueryOptions, UseQueryResult } from 'react-query';
-import { useQuery } from 'react-query';
+import type { QueryKey, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
-export type QueryWrapper<ReturnType, ErrorType> = {
+export interface QueryWrapper<ReturnType, ErrorType> {
   <SelectedType = ReturnType>(options?: UseQueryOptions<ReturnType, ErrorType, SelectedType>): UseQueryResult<
     SelectedType,
     ErrorType
   >;
   getQueryKey: () => QueryKey;
-};
+}
 
 export const createQueryWrapper = <ErrorType = unknown, ReturnType = any>(
   queryFn: () => Promise<ReturnType>,
@@ -17,7 +17,7 @@ export const createQueryWrapper = <ErrorType = unknown, ReturnType = any>(
 
   const useQueryWrapper = <SelectedType = ReturnType>(
     options: UseQueryOptions<ReturnType, ErrorType, SelectedType> = {}
-  ) => useQuery<ReturnType, ErrorType, SelectedType>(getQueryKey(), async () => queryFn(), options);
+  ) => useQuery<ReturnType, ErrorType, SelectedType>(getQueryKey(), async () => await queryFn(), options);
 
   useQueryWrapper.getQueryKey = getQueryKey;
 

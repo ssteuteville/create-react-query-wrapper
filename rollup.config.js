@@ -9,6 +9,7 @@ export default [
   {
     input: 'src/index.ts',
     plugins: [esbuild()],
+    external: ['@tanstack/react-query'],
     output: [
       {
         file: 'dist/bundle.js',
@@ -20,6 +21,7 @@ export default [
   {
     input: 'src/index.ts',
     plugins: [dts()],
+    external: ['@tanstack/react-query'],
     output: {
       file: 'dist/bundle.d.ts',
       format: 'es',

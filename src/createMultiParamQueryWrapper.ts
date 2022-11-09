@@ -1,13 +1,13 @@
-import type { UseQueryOptions, QueryKey, UseQueryResult } from 'react-query';
-import { useQuery } from 'react-query';
+import type { UseQueryOptions, QueryKey, UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
-export type MultiParamQueryWrapper<ReturnType, ErrorType, ParamsType extends any[]> = {
+export interface MultiParamQueryWrapper<ReturnType, ErrorType, ParamsType extends any[]> {
   <SelectedType = ReturnType>(
     options?: UseQueryOptions<ReturnType, ErrorType, SelectedType>,
     ...params: ParamsType
   ): UseQueryResult<SelectedType, ErrorType>;
   getQueryKey: (params?: ParamsType | undefined) => QueryKey;
-};
+}
 
 export const createMultiParamQueryWrapper = <
   ErrorType = unknown,
@@ -18,7 +18,7 @@ export const createMultiParamQueryWrapper = <
   queryName: string
 ): MultiParamQueryWrapper<ReturnType, ErrorType, ParamsType> => {
   const getQueryKey = (params: ParamsType | undefined = undefined) =>
-    params ? [queryName, ...params] : [queryName];
+    params != null ? [queryName, ...params] : [queryName];
 
   const useQueryWrapper = <SelectedType = ReturnType>(
     options: UseQueryOptions<ReturnType, ErrorType, SelectedType> = {},
@@ -26,7 +26,7 @@ export const createMultiParamQueryWrapper = <
   ) =>
     useQuery<ReturnType, ErrorType, SelectedType>(
       getQueryKey(params),
-      async () => queryFn(...params),
+      async () => await queryFn(...params),
       options
     );
 
