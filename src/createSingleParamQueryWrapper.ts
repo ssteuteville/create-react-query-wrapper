@@ -11,7 +11,7 @@ export type SingleParamQueryWrapper<
     param: ParamsType,
     options?: UseQueryOptions<ReturnType, ErrorType, SelectedType>
   ): UseQueryResult<SelectedType, ErrorType>;
-  getQueryKey: (param: ParamsType | undefined) => QueryKey;
+  getQueryKey: (param?: ParamsType | undefined) => QueryKey;
 };
 
 export const createSingleParamQueryWrapper = <
@@ -19,7 +19,7 @@ export const createSingleParamQueryWrapper = <
   ParamsType extends Record<string, Primitive> | Primitive = Record<string, Primitive>,
   ReturnType = any
 >(
-  apiFunc: (params: ParamsType) => Promise<ReturnType>,
+  queryFn: (params: ParamsType) => Promise<ReturnType>,
   queryName: string
 ): SingleParamQueryWrapper<ReturnType, ErrorType, ParamsType> => {
   const getQueryKey = (params: ParamsType | undefined = undefined): QueryKey =>
@@ -30,7 +30,7 @@ export const createSingleParamQueryWrapper = <
   const useQueryWrapper = <SelectedType = ReturnType>(
     param: ParamsType,
     options: UseQueryOptions<ReturnType, ErrorType, SelectedType> = {}
-  ) => useQuery<ReturnType, ErrorType, SelectedType>(getQueryKey(param), async () => apiFunc(param), options);
+  ) => useQuery<ReturnType, ErrorType, SelectedType>(getQueryKey(param), async () => queryFn(param), options);
 
   useQueryWrapper.getQueryKey = getQueryKey;
 

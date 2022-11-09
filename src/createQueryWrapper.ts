@@ -10,14 +10,14 @@ export type QueryWrapper<ReturnType, ErrorType> = {
 };
 
 export const createQueryWrapper = <ErrorType = unknown, ReturnType = any>(
-  apiFunc: () => Promise<ReturnType>,
+  queryFn: () => Promise<ReturnType>,
   queryName: string
 ): QueryWrapper<ReturnType, ErrorType> => {
   const getQueryKey = (): QueryKey => [queryName];
 
   const useQueryWrapper = <SelectedType = ReturnType>(
     options: UseQueryOptions<ReturnType, ErrorType, SelectedType> = {}
-  ) => useQuery<ReturnType, ErrorType, SelectedType>(getQueryKey(), async () => apiFunc(), options);
+  ) => useQuery<ReturnType, ErrorType, SelectedType>(getQueryKey(), async () => queryFn(), options);
 
   useQueryWrapper.getQueryKey = getQueryKey;
 
